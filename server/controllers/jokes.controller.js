@@ -13,12 +13,15 @@ module.exports.getAllJokes = (req, res) => {
 module.exports.getOneJoke = (req, res) => {
     Joke.findOne({ _id: req.params._id })
         .then(oneJoke => res.json({ joke: oneJoke }))
-        .catch(err => res.json({ message: 'Sending here. Something went wrong', error: err }));
+        .catch(err => res.json({ message: 'Something went wrong', error: err }));
 }
 
 module.exports.getRandomJoke = (req, res) => {
-    Joke.findOne()
-        .then(randomJoke => res.json({ joke: randomJoke }))
+    Joke.find()
+        .then(allJokes => {
+            let randomJoke = Math.floor(Math.random() * allJokes.length);
+            res.json({ jokes: allJokes[randomJoke] })
+        })
         .catch(err => res.json({ message: 'Something went wrong', error: err }));
 }
 
